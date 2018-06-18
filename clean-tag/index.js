@@ -1,5 +1,5 @@
 import React from 'react'
-import { propTypes } from 'styled-system'
+import { propTypes, util } from 'styled-system'
 import tags from 'html-tags'
 
 const allPropTypes = Object.keys(propTypes)
@@ -26,9 +26,11 @@ export class Tag extends React.Component {
       ...props
     } = this.props
     const attr = omit(props, blacklist)
+    const baseProps = util.get(is, 'defaultProps')
 
     return React.createElement(is, {
       ref: innerRef,
+      ...baseProps,
       ...attr
     })
   }
