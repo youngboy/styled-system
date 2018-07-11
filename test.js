@@ -98,6 +98,16 @@ const theme = {
   }
 }
 
+test('system returns a style object', t => {
+  const a = system.system({
+    px: 3,
+    py: [ 4, 5 ],
+    width: 1/2,
+    color: 'tomato'
+  })
+  t.is(typeof a, 'object')
+})
+
 test('exports space, width, and fontSize', t => {
   t.is(typeof space, 'function')
   t.is(typeof width, 'function')
@@ -209,7 +219,10 @@ test('util.merge doesn’t throw with null values', t => {
   })
 })
 
-test.todo('util.compose')
+test('util.compose', t => {
+  const composed = util.compose(space, color)
+  t.is(typeof composed, 'function')
+})
 
 // space
 test('space returns margin declarations', t => {

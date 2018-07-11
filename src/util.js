@@ -33,15 +33,19 @@ export const merge = (a, b) => Object.assign({}, a, b, Object
     }),
     {}))
 
-export const compose = (...funcs) => {
-  const fn = props => funcs
-    .map(fn => fn(props))
+export const compose = (...args) => {
+  const funcs = args
     .filter(Boolean)
-    .reduce(merge)
+    .filter(fn => typeof fn === 'function')
+  const fn = props => funcs
+      .map(fn => fn(props))
+      .filter(Boolean)
+      .reduce(merge, {})
 
   fn.propTypes = funcs
     .map(fn => fn.propTypes)
-    .reduce(merge)
+    .reduce(merge, {})
+
   return fn
 }
 

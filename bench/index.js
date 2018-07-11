@@ -5,7 +5,8 @@ const {
   width,
   fontSize,
   color,
-  style
+  style,
+  system
 } = require('../dist')
 // v2
 const {
@@ -36,6 +37,16 @@ const tests = [
       'magenta',
     ] })
   },
+  // all style functions
+  {
+    name: 'system all',
+    func: () => system({
+      px: 3,
+      py: 4,
+      color: 'tomato',
+      bg: 'black'
+    })
+  }
 ]
 
 const v2tests = [

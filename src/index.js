@@ -84,6 +84,7 @@ export {
 
 // new
 export { default as variant } from './variant'
+export { default as system } from './all'
 
 // aliases for v2 api
 export { style as responsiveStyle } from './util'
