@@ -54,48 +54,43 @@ const defaultScale = [
 ]
 
 const space = props => {
-  const keys = Object.keys(props)
-    .filter(key => REG.test(key))
-    .sort()
+  // const keys = Object.keys(props).filter(key => REG.test(key)).sort()
   const scale = idx(props.theme, 'space') || defaultScale
+  const getStyle = getValue(scale)
+
   const breakpoints = [
     null,
     ...(idx(props.theme, 'breakpoints') || defaultBreakpoints)
-      .map(createMediaQuery)
+    .map(createMediaQuery)
   ]
 
-  const getStyle = getValue(scale)
+  let styles = {}
+  for (const key in props) {
+    if (!REG.test(key)) continue
+    const value = props[key]
+    const properties = getProperties(key)
+    const style = n => is(n) ? properties.reduce((a, prop) => ({
+      ...a,
+      [prop]: getStyle(n)
+    }), {}) : null
 
-  return keys
-    .map(key => {
-      const value = props[key]
-      const properties = getProperties(key)
+    if (!Array.isArray(value)) {
+      styles = merge(styles, style(value))
+      continue
+    }
 
-      const style = n => is(n) ? properties.reduce((a, prop) => ({
-        ...a,
-        [prop]: getStyle(n)
-      }), {}) : null
-
-      if (!Array.isArray(value)) {
-        return style(value)
+    for (let i = 0; i < value.length; i++) {
+      const media = breakpoints[i]
+      if (!media) {
+        styles = merge(styles, style(value[i]))
+        continue
       }
-
-      let styles = {}
-
-      for (let i = 0; i < value.length; i++) {
-        const media = breakpoints[i]
-        if (!media) {
-          styles = style(value[i])
-          continue
-        }
-        const rule = style(value[i])
-        if (!rule) continue
-        styles[media] = rule
-      }
-
-      return styles
-    })
-    .reduce(merge)
+      const rule = style(value[i])
+      if (!rule) continue
+      styles = merge(styles, rule)
+    }
+  }
+  return styles
 }
 
 space.propTypes = {

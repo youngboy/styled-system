@@ -2,6 +2,7 @@ const Benchmark = require('benchmark')
 // v3
 const {
   space,
+  space2,
   width,
   fontSize,
   color,
@@ -19,12 +20,14 @@ const suite = new Benchmark.Suite()
 const tests = [
   // v3
   { name: 'space', func: () => space({ m: 2 }) },
+  { name: 'space2', func: () => space2({ m: 2 }) },
   { name: 'width', func: () => width({ width: 1/2 }) },
   { name: 'fontSize', func: () => fontSize({ fontSize: 2 }) },
   { name: 'color', func: () => color({ color: 'tomato' }) },
   { name: 'style', func: () => style({ prop: 'color' })({ color: 'tomato' }) },
   { name: 'width array', func: () => width({ width: [ 1, 1/2, 1/3, 1/4, 1/5 ] }) },
   { name: 'space array', func: () => space({ m: [ 0, 1, 2, 3, 4 ] }) },
+  { name: 'space2 array', func: () => space2({ m: [ 0, 1, 2, 3, 4 ] }) },
   { name: 'fontSize array', func: () => fontSize({ fontSize: [ 1, 2, 3, 4, 5 ] }) },
   {
     name: 'color array',
