@@ -79,8 +79,6 @@ import {
   textStyle,
   colorStyle,
   buttonStyle,
-
-  borderWidth
 } from './src'
 
 // - [x] rename responsiveStyle tests
@@ -1201,6 +1199,32 @@ test('variant returns null', t => {
   const a = variant({ key: 'buttons' })({ theme, variant: 'primary' })
   t.is(a, null)
 })
+
+test('variant parses styled-system props', t => {
+  const theme = {
+    colors: {
+      white: '#eef',
+      blue: '#07c'
+    },
+    buttons: {
+      primary: {
+        color: 'white',
+        bg: 'blue'
+      }
+    }
+  }
+  const a = variant({
+    key: 'buttons',
+    styles: [
+      color
+    ]
+  })({ theme, variant: 'primary' })
+  t.deepEqual(a, {
+    color: '#eef',
+    backgroundColor: '#07c'
+  })
+})
+
 
 Object.keys(styles).forEach(key => {
   test(`${key}.propTypes is an object`, t => {

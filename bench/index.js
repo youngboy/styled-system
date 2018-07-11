@@ -5,7 +5,9 @@ const {
   width,
   fontSize,
   color,
-  style
+  style,
+  all,
+  allComposed
 } = require('../dist')
 // v2
 const {
@@ -36,6 +38,13 @@ const tests = [
       'magenta',
     ] })
   },
+  { name: 'all', func: () => all({ m: 2 }) },
+  { name: 'all2', func: () => all({ m: 2, p: 3 }) },
+  { name: 'all array', func: () => all({ m: [ 0, 1, 2, 3, 4 ] }) },
+
+  { name: 'allComposed', func: () => allComposed({ m: 2 }) },
+  { name: 'allComposed', func: () => allComposed({ m: 2, p: 3 }) },
+  { name: 'allComposed array', func: () => allComposed({ m: [ 0, 1, 2, 3, 4 ] }) },
 ]
 
 const v2tests = [

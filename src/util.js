@@ -37,15 +37,24 @@ export const compose = (...funcs) => {
   const fn = props => funcs
     .map(fn => fn(props))
     .filter(Boolean)
-    .reduce(merge)
+    .reduce(merge, {})
 
   fn.propTypes = funcs
     .map(fn => fn.propTypes)
-    .reduce(merge)
+    .reduce(merge, {})
   return fn
 }
 
 export const createMediaQuery = n => `@media screen and (min-width: ${n})`
+
+export const omit = (obj, blacklist) => {
+  const next = {}
+  for (let key in obj) {
+    if (blacklist.indexOf(key) > -1) continue
+    next[key] = obj[key]
+  }
+  return next
+}
 
 export const style = ({
   prop,
