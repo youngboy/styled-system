@@ -99,7 +99,7 @@ const theme = {
   }
 }
 
-test.only('all', t => {
+test('all', t => {
   const a = all({
     theme,
     textDecoration: 'none',
