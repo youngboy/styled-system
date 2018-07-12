@@ -79,6 +79,9 @@ import {
   textStyle,
   colorStyle,
   buttonStyle,
+
+  // experimental
+  all
 } from './src'
 
 // - [x] rename responsiveStyle tests
@@ -95,6 +98,19 @@ const theme = {
     gray: ['#ccc', '#555']
   }
 }
+
+test.only('all', t => {
+  const a = all({
+    theme,
+    textDecoration: 'none',
+    color: 'white',
+    bg: 'blue',
+    px: 3,
+    py: [3, 4]
+  })
+  console.log(a)
+  t.is(typeof a, 'object')
+})
 
 test('exports space, width, and fontSize', t => {
   t.is(typeof space, 'function')
