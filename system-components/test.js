@@ -158,30 +158,19 @@ describe('system-components', () => {
 
   test('merges defaultProps from `is` prop component', () => {
     const Base = system({ p: 3 })
-    const Ext = system({ is: Base })
-    const json = render(<Ext />).toJSON()
+    const Ext = system({ is: 'div' })
+    const json = render(<Ext is={Base} />).toJSON()
     expect(json).toHaveStyleRule('padding', '16px')
-    expect(Ext.defaultProps.p).toBe(3)
   })
 
   test('extends components with the is prop and passes is prop to clean-tag', () => {
     const Base = system({ p: 3 })
     const Ext = system({ is: Base }, 'color')
     const base = render(<Base />).toJSON()
-    const json = render(<Ext is='footer' p={3} bg='tomato' />).toJSON()
+    const json = render(<Ext is={['footer', Base]} bg='tomato' />).toJSON()
     expect(json.type).toBe('footer')
     expect(json).toHaveStyleRule('background-color', 'tomato')
     expect(json).toHaveStyleRule('padding', '16px')
-  })
-
-  test('extends a non-system component and does not accept an is prop', () => {
-    const Base = props => <div className='Base' {...props} />
-    const Ext = system({ is: Base }, 'color')
-    const json = render(
-      <Ext is='footer' color='tomato' />
-    ).toJSON()
-    expect(json.type).toBe('div')
-    expect(json).toHaveStyleRule('color', 'tomato')
   })
 
   test('passes innerRef to underlying element', () => {

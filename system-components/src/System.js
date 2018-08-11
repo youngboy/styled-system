@@ -47,12 +47,28 @@ const tag = React.forwardRef(({
   is: Tag = 'div',
   blacklist = [],
   ...props
-}, ref) =>
-  <Tag
-    ref={ref}
-    {...omit(props, blacklist)}
-  />
-)
+}, ref) => {
+  const Cmps = Array.isArray(Tag) ? Tag : [Tag]
+
+  let mergedBlacklist = blacklist
+  const Item = Cmps.reverse().reduce((prev, item) => {
+    if (item.defaultProps) {
+      mergedBlacklist = [
+        ...mergedBlacklist,
+        ...(item.defaultProps.blacklist || [])
+      ]
+    }
+    if (!prev) return item
+    if (typeof item === 'string') {
+      if (typeof prev === 'string') {
+        return item
+      }
+      return prev.withComponent(item)
+    }
+    return item.withComponent(prev)
+  }, null)
+  return <Item ref={ref} {...omit(props, mergedBlacklist)} />
+})
 
 class System {
   constructor (opts) {
@@ -76,18 +92,13 @@ class System {
         ...(defaultProps ? defaultProps.blacklist || [] : [])
       ]
 
-      const Base = defaultProps && typeof defaultProps.is === 'function' ? defaultProps.is : tag
+      const Base = tag
 
       const Component = createComponent(Base)(css, ...funcs)
 
-      const baseProps = util.get(defaultProps, 'is.defaultProps') || {}
       Component.defaultProps = {
-        ...baseProps,
-        blacklist: [
-          ...blacklist,
-          ...(baseProps.blacklist || [])
-        ],
-        ...defaultProps
+        ...defaultProps,
+        blacklist
       }
       Component.propTypes = propTypes
       Component.systemComponent = true
